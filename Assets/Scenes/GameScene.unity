@@ -279,6 +279,8 @@ MonoBehaviour:
   normalDrag: 0
   stoppingDrag: 10
   isGrounded: 0
+  minAngle: -88
+  maxAngle: 88
   moveVector: {x: 0, y: 0}
   lookVector: {x: 0, y: 0}
   alt: 0

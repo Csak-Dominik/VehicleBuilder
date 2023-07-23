@@ -22,7 +22,7 @@ public class InputManager
     public Action<bool> OnLeftClick;
     public Action<bool> OnRightClick;
     public Action<bool> OnMiddleClick;
-    public Action<float> OnScroll;
+    public Action<Vector2> OnScroll;
 
     public Action<bool> OnEscape;
     public Action<bool> OnAlt;
@@ -30,6 +30,8 @@ public class InputManager
     public Action<bool> OnInteractE;
     public Action<bool> OnInteractQ;
     public Action<bool> OnInteractF;
+
+    public Action<bool> OnEditorFocus;
 
     #endregion Events
 
@@ -39,6 +41,7 @@ public class InputManager
         InitModifiers();
         InitMouse();
         InitInteract();
+        InitEditor();
 
         // Enable
         _inputActions.Player.Enable();
@@ -85,8 +88,8 @@ public class InputManager
         _inputActions.Player.MiddleClick.performed += ctx => OnMiddleClick?.Invoke(true);
         _inputActions.Player.MiddleClick.canceled += ctx => OnMiddleClick?.Invoke(false);
 
-        _inputActions.Player.Scroll.performed += ctx => OnScroll?.Invoke(ctx.ReadValue<float>());
-        _inputActions.Player.Scroll.canceled += ctx => OnScroll?.Invoke(0);
+        _inputActions.Player.Scroll.performed += ctx => OnScroll?.Invoke(ctx.ReadValue<Vector2>());
+        _inputActions.Player.Scroll.canceled += ctx => OnScroll?.Invoke(Vector2.zero);
     }
 
     private void InitInteract()
@@ -100,5 +103,11 @@ public class InputManager
 
         _inputActions.Player.InteractF.performed += ctx => OnInteractF?.Invoke(true);
         _inputActions.Player.InteractF.canceled += ctx => OnInteractF?.Invoke(false);
+    }
+
+    private void InitEditor()
+    {
+        _inputActions.Player.EditorFocus.performed += ctx => OnEditorFocus?.Invoke(true);
+        _inputActions.Player.EditorFocus.canceled += ctx => OnEditorFocus?.Invoke(false);
     }
 }

@@ -26,6 +26,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private bool isGrounded = false;
 
+    [SerializeField]
+    [Range(-90f, 0)]
+    private float minAngle = -90f;
+
+    [SerializeField]
+    [Range(0, 90f)]
+    private float maxAngle = 90f;
+
     public bool IsGrounded
     { get { return isGrounded; } set { isGrounded = value; } }
 
@@ -52,6 +60,8 @@ public class PlayerController : MonoBehaviour
 
         Move();
         Look();
+
+        Debug.Log(UnityAngleConverter(cam.transform.localEulerAngles.x));
     }
 
     private void Move()
@@ -80,7 +90,19 @@ public class PlayerController : MonoBehaviour
     private void Look()
     {
         transform.Rotate(new Vector3(0, lookVector.x, 0) * lookSpeed * Time.fixedDeltaTime);
-        cam.transform.Rotate(new Vector3(-lookVector.y, 0, 0) * lookSpeed * Time.fixedDeltaTime);
+
+        var rotation = -lookVector.y * lookSpeed * Time.fixedDeltaTime;
+
+        var currentAngle = -UnityAngleConverter(cam.transform.localEulerAngles.x);
+        var allowedAngleChange = Mathf.Clamp(currentAngle + rotation, minAngle, maxAngle) - currentAngle;
+
+        cam.transform.Rotate(Vector3.right * allowedAngleChange);
+    }
+
+    private float UnityAngleConverter(float angle)
+    {
+        if (angle > 180) return -(angle - 360);
+        else return -angle;
     }
 
     #region EventHandlers

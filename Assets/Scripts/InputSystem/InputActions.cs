@@ -152,6 +152,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EditorFocus"",
+                    ""type"": ""Button"",
+                    ""id"": ""38c9f6ea-5b55-4d3d-bd77-bc62c4e65c9d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -352,6 +361,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""InteractF"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e55fa13-3740-4471-9129-de2ff3141140"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EditorFocus"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -374,6 +394,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Player_InteractE = m_Player.FindAction("InteractE", throwIfNotFound: true);
         m_Player_InteractQ = m_Player.FindAction("InteractQ", throwIfNotFound: true);
         m_Player_InteractF = m_Player.FindAction("InteractF", throwIfNotFound: true);
+        m_Player_EditorFocus = m_Player.FindAction("EditorFocus", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -449,6 +470,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_InteractE;
     private readonly InputAction m_Player_InteractQ;
     private readonly InputAction m_Player_InteractF;
+    private readonly InputAction m_Player_EditorFocus;
     public struct PlayerActions
     {
         private @InputActions m_Wrapper;
@@ -467,6 +489,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @InteractE => m_Wrapper.m_Player_InteractE;
         public InputAction @InteractQ => m_Wrapper.m_Player_InteractQ;
         public InputAction @InteractF => m_Wrapper.m_Player_InteractF;
+        public InputAction @EditorFocus => m_Wrapper.m_Player_EditorFocus;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -518,6 +541,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @InteractF.started += instance.OnInteractF;
             @InteractF.performed += instance.OnInteractF;
             @InteractF.canceled += instance.OnInteractF;
+            @EditorFocus.started += instance.OnEditorFocus;
+            @EditorFocus.performed += instance.OnEditorFocus;
+            @EditorFocus.canceled += instance.OnEditorFocus;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -564,6 +590,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @InteractF.started -= instance.OnInteractF;
             @InteractF.performed -= instance.OnInteractF;
             @InteractF.canceled -= instance.OnInteractF;
+            @EditorFocus.started -= instance.OnEditorFocus;
+            @EditorFocus.performed -= instance.OnEditorFocus;
+            @EditorFocus.canceled -= instance.OnEditorFocus;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -597,5 +626,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnInteractE(InputAction.CallbackContext context);
         void OnInteractQ(InputAction.CallbackContext context);
         void OnInteractF(InputAction.CallbackContext context);
+        void OnEditorFocus(InputAction.CallbackContext context);
     }
 }
