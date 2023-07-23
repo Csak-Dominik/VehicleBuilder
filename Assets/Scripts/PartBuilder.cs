@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class PartBuilder : MonoBehaviour
 {
-    public GameObject selectedPartPrefab;
+    [field: SerializeField]
+    public GameObject SelectedPartPrefab { get; private set; }
 
     private GameObject highlightPart;
 
@@ -27,7 +28,7 @@ public class PartBuilder : MonoBehaviour
     private void Awake()
     {
         // instantiate the highlight part
-        highlightPart = Instantiate(selectedPartPrefab);
+        highlightPart = Instantiate(SelectedPartPrefab);
 
         // disable the highlight part
         highlightPart.SetActive(false);
@@ -92,7 +93,7 @@ public class PartBuilder : MonoBehaviour
         if (leftMouse && !prevLeftMouse && canPlacePart && highlightPart.activeSelf)
         {
             // instantiate the part
-            var part = Instantiate(selectedPartPrefab);
+            var part = Instantiate(SelectedPartPrefab);
 
             // set the part's position to the highlight part's position
             part.transform.position = highlightPart.transform.position;
@@ -105,6 +106,22 @@ public class PartBuilder : MonoBehaviour
 
         prevCanPlacePart = highlightPartCollision.CanPlacePart;
         prevLeftMouse = leftMouse;
+    }
+
+    public void SetSelectedPartPrefab(GameObject prefab)
+    {
+        SelectedPartPrefab = prefab;
+
+        // instantiate the highlight part
+        highlightPart = Instantiate(SelectedPartPrefab);
+
+        // disable the highlight part
+        highlightPart.SetActive(false);
+
+        // set the highlight part's material to the highlight material
+        highlightPartMeshRenderer = highlightPart.GetComponent<MeshRenderer>();
+        highlightPartCollision = highlightPart.AddComponent<HighlightPartCollision>();
+        highlightPartMeshRenderer.material = notPlaceableMat;
     }
 
     #region Event Handlers
